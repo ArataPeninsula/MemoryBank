@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -25,6 +26,13 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
         if (convertView == null) {
             convertView = layoutinflater.inflate(R.layout.layout_item_memo, null);
         }
+
+        TextView titleText = (TextView) convertView.findViewById(R.id.titleEditText);
+        TextView contentText = (TextView) convertView.findViewById(R.id.contentEditText);
+
+        titleText.setText(memo.title);
+        contentText.setText(memo.content);
+
 
         return convertView;
     }
