@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MemoAdapter extends ArrayAdapter<Memo> {
+public class MemoAdapter extends ArrayAdapter<Topic> {
 
     private LayoutInflater layoutinflater;
 
-    MemoAdapter(Context context, int textViewResourceId, List<Memo> objects) {
+    MemoAdapter(Context context, int textViewResourceId, List<Topic> objects) {
         super(context, textViewResourceId, objects);
         layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -24,17 +24,33 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
     @Override
     public View getView(int position, View convertView,  ViewGroup parent) {
 
-        Memo memo = getItem(position);
+        Topic topic = getItem(position);
 
         if (convertView == null) {
             convertView = layoutinflater.inflate(R.layout.layout_item_memo, null);
         }
 
         TextView titleText = (TextView) convertView.findViewById(R.id.titleText);
-        TextView contentText = (TextView) convertView.findViewById(R.id.contentText);
+        TextView categoryText = (TextView) convertView.findViewById(R.id.categoryText);
 
-        titleText.setText(memo.title);
-        contentText.setText(memo.content);
+        //level追加?
+        //TextView levelText = (TextView) convertView.findViewById(R.id.levelText);
+
+
+        titleText.setText(topic.title);
+
+        //contentText.setText(topic.content);
+
+        // res/array/list.xmlに定義したものから配列をつくる
+         String[] categoryArray = getContext().getResources().getStringArray(R.array.list);
+
+        // 保存してある番号から実際のCategoryを取得
+        categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
+
+
+        //categoryText.setText(topic.category);
+
+
 
 
         return convertView;

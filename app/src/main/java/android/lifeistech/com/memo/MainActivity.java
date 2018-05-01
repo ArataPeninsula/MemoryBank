@@ -34,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Memo memo = (Memo) parent.getItemAtPosition(position);
+                Topic topic = (Topic) parent.getItemAtPosition(position);
                 Intent intent = new Intent(MainActivity.this,DetailActivity.class);
-                intent.putExtra("updateDate",memo.updateDate);
+                intent.putExtra("updateDate",topic.updateDate);
                 startActivity(intent);
 
             }
@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     public void setMemoList(){
 
         //realmから読み取る
-        RealmResults<Memo> results = realm.where(Memo.class).findAll();
-        List<Memo> items = realm.copyFromRealm(results);
+        RealmResults<Topic> results = realm.where(Topic.class).findAll();
+        List<Topic> items = realm.copyFromRealm(results);
 
         MemoAdapter adapter = new MemoAdapter(this,R.layout.layout_item_memo,items);
 

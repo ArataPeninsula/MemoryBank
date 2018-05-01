@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Memo</string>
+
+
+    //Spinner（ジャンルを選択肢から選ぶ）を利用するときの選択肢↓　
+    <string-array name="list">
+        <item>　</item>
+        <item>悲しい</item>
+        <item>怒った</item>
+        <item>まじめ</item>
+        <item>アイデア</item>
+    </string-array>
 </resources>

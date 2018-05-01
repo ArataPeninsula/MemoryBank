@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import io.realm.Realm;
 
@@ -12,7 +13,8 @@ public class DetailActivity extends AppCompatActivity {
     public Realm realm;
 
     public EditText titleText;
-    public EditText contentText;
+    public Spinner categorySpinner;
+
 
 
     @Override
@@ -24,7 +26,7 @@ public class DetailActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
         titleText =(EditText) findViewById(R.id.titleEditText);
-        contentText = (EditText) findViewById(R.id.contentEditText);
+        categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
 
         showData();
 
@@ -32,24 +34,29 @@ public class DetailActivity extends AppCompatActivity {
 
     public void showData(){
 
-        final Memo memo = realm.where(Memo.class).equalTo("updateDate",
+        final Topic topic = realm.where(Topic.class).equalTo("updateDate",
                 getIntent().getStringExtra("updateDate")).findFirst();
 
-        titleText.setText(memo.title);
-        contentText.setText(memo.content);
+        titleText.setText(topic.title);
+        //contentText.setText(topic.content);
+
+        categorySpinner.setSelection(topic.selectedCategoryPosition);
+
     }
 
     public void update (View view){
 
-        final Memo memo = realm.where(Memo.class).equalTo("updateDate"
+        final Topic topic = realm.where(Topic.class).equalTo("updateDate"
                 ,getIntent().getStringExtra("updateDate")).findFirst();
 
         //更新する
         realm.executeTransaction(new Realm.Transaction(){
             @Override
             public void execute(Realm realm){
-                memo.title = titleText.getText().toString();
-                memo.content = contentText.getText().toString();
+                topic.title = titleText.getText().toString();
+                //topic.content = contentText.getText().toString();
+                topic.selectedCategoryPosition = categorySpinner.getSelectedItemPosition();
+
 
             }
         });

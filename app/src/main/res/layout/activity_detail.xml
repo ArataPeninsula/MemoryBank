@@ -17,16 +17,12 @@
             android:hint="タイトル"
             android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/contentEditText"
+        <Spinner
+            android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:layout_weight="1"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="内容"
-            android:inputType="textPersonName" />
+            android:layout_height="wrap_content"
+            android:entries="@array/list"
+            android:gravity="right" />
 
         <Button
             android:id="@+id/button2"
