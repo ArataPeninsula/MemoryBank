@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -28,6 +29,18 @@ public class MainActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
         listView = (ListView) findViewById(R.id.listView);
+
+        //編集画面に遷移（クリック）
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Memo memo = (Memo) parent.getItemAtPosition(position);
+                Intent intent = new Intent(MainActivity.this,DetailActivity.class);
+                intent.putExtra("updateDate",memo.updateDate);
+                startActivity(intent);
+
+            }
+        });
 
 
     }

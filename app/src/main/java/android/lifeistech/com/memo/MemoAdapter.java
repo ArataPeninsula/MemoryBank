@@ -1,6 +1,8 @@
 package android.lifeistech.com.memo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +20,9 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
         layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView,  ViewGroup parent) {
 
         Memo memo = getItem(position);
 
@@ -27,8 +30,8 @@ public class MemoAdapter extends ArrayAdapter<Memo> {
             convertView = layoutinflater.inflate(R.layout.layout_item_memo, null);
         }
 
-        TextView titleText = (TextView) convertView.findViewById(R.id.titleEditText);
-        TextView contentText = (TextView) convertView.findViewById(R.id.contentEditText);
+        TextView titleText = (TextView) convertView.findViewById(R.id.titleText);
+        TextView contentText = (TextView) convertView.findViewById(R.id.contentText);
 
         titleText.setText(memo.title);
         contentText.setText(memo.content);
