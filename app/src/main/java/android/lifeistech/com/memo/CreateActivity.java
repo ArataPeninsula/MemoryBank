@@ -97,6 +97,7 @@ public class CreateActivity extends AppCompatActivity {
                 total = id3 + 1;
 
                 editor.putInt("goukei",total);
+                editor.apply();
 
             }
         });
