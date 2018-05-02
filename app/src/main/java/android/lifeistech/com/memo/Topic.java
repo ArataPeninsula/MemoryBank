@@ -25,6 +25,12 @@ public class Topic extends  RealmObject{
         //categoryの配列（list）の番号
         public int selectedCategoryPosition;
 
+        //topicのidを宣言
+        public int id;
+
+
+
+
 
 
 

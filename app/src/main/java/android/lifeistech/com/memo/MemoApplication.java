@@ -13,5 +13,6 @@ public class MemoApplication extends Application {
         Realm.init(getApplicationContext());
 
 
+
     }
 }

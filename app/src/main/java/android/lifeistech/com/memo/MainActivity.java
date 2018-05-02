@@ -81,4 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public void move(View v){
+
+        Intent intent = new Intent(this,TopActivity.class);
+        startActivity(intent);
+
+
+
+    }
 }

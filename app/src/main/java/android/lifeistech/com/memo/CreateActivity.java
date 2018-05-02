@@ -1,5 +1,7 @@
 package android.lifeistech.com.memo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,12 +21,25 @@ public class CreateActivity extends AppCompatActivity {
 
     public EditText titleEditText;
 
+
+
+    //SharedPreferences を宣言
+    SharedPreferences maxNumber;
+
+    SharedPreferences.Editor editor;
+    public int total;
+
+
+
+
     //contentEditTextはコメントアウトしておく
     //public EditText contentEditText;
 
 
     //
     public Spinner categorySpinner;
+
+
 
 
 
@@ -46,12 +61,21 @@ public class CreateActivity extends AppCompatActivity {
         categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
 
 
+        //SharedPreferences のインスタンス形成
+        maxNumber = getSharedPreferences("maxNumber", Context.MODE_PRIVATE);
+        editor = maxNumber.edit();
+
+
+
     }
 
     //ここから下がわからない！　title,updateDate はどこで定義したんだろう？
     //CreateActivityの部分の教科書を見直す(→createメソッドからみる）
 
-    public void save(final String title, final String updateDate,final int selectedItemPosition){
+    //id3はなんて名前でもよい
+
+    public void save(final String title, final String updateDate,final int selectedItemPosition,
+                     final int id3){
 
         realm.executeTransaction(new Realm.Transaction(){
             @Override
@@ -67,6 +91,12 @@ public class CreateActivity extends AppCompatActivity {
                 //topic.category = category;
 
                 topic.selectedCategoryPosition = selectedItemPosition;
+
+                topic.id = id3;
+
+                total = id3 + 1;
+
+                editor.putInt("goukei",total);
 
             }
         });
@@ -96,10 +126,23 @@ public class CreateActivity extends AppCompatActivity {
         int selectedItemPosition = (int) categorySpinner.getSelectedItemPosition();
 
 
+
+        //topicのidを取得
+
+        total = maxNumber.getInt("goukei",0);
+
+
+
+        //int id2 = total;
+
+
+
         //check(title,updateDate,content);
 
-        //保存する
-        save(title,updateDate,selectedItemPosition);
+
+        save(title,updateDate,selectedItemPosition,total);
+
+
         //画面を終了する
         finish();
     }
