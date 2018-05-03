@@ -1,5 +1,6 @@
 package android.lifeistech.com.memo;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class CreateActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +65,13 @@ public class CreateActivity extends AppCompatActivity {
 
         //SharedPreferences のインスタンス形成
         maxNumber = getSharedPreferences("maxNumber", Context.MODE_PRIVATE);
-        editor = maxNumber.edit();
+
 
 
 
     }
 
-    //ここから下がわからない！　title,updateDate はどこで定義したんだろう？
-    //CreateActivityの部分の教科書を見直す(→createメソッドからみる）
+
 
     //id3はなんて名前でもよい
 
@@ -95,6 +96,9 @@ public class CreateActivity extends AppCompatActivity {
                 topic.id = id3;
 
                 total = id3 + 1;
+
+
+                editor = maxNumber.edit();
 
                 editor.putInt("goukei",total);
                 editor.apply();
@@ -149,7 +153,7 @@ public class CreateActivity extends AppCompatActivity {
     }
 
 
-    //引数からcontentを消した
+
     private void check(String title,String updateDate){
 
         Topic topic = new Topic();

@@ -30,7 +30,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="99dp"
         android:onClick="select"
-        android:text="Button" />
+        android:text="思い出す！" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -43,5 +43,15 @@
         android:clickable="true"
         android:onClick="move"
         app:srcCompat="?android:attr/textSelectHandle" />
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button4"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="13dp"
+        android:entries="@array/list"
+        android:spinnerMode="dialog" />
 
 </RelativeLayout>
