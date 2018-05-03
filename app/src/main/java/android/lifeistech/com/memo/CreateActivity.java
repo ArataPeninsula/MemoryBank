@@ -75,7 +75,7 @@ public class CreateActivity extends AppCompatActivity {
 
     //id3はなんて名前でもよい
 
-    public void save(final String title, final String updateDate,final int selectedItemPosition,
+    public void save(final String title, final String updateDate,final int selectedCategoryPosition,
                      final int id3){
 
         realm.executeTransaction(new Realm.Transaction(){
@@ -91,7 +91,7 @@ public class CreateActivity extends AppCompatActivity {
                 //realmに保存されるのはCategoryの文字情報ではなく、listのうちの何番目か、という情報
                 //topic.category = category;
 
-                topic.selectedCategoryPosition = selectedItemPosition;
+                topic.selectedCategoryPosition = selectedCategoryPosition;
 
                 topic.id = id3;
 
@@ -102,6 +102,9 @@ public class CreateActivity extends AppCompatActivity {
 
                 editor.putInt("goukei",total);
                 editor.apply();
+
+                //levelは最初は全て0でいい
+                topic.level = 0;
 
             }
         });
@@ -128,7 +131,7 @@ public class CreateActivity extends AppCompatActivity {
 
         //Spinnerにはどんな型でも入れられる→getSelectedItem():オブジェクト型(多くの変数型のSuper.)を取得
         // ＋（String)でString型にCast
-        int selectedItemPosition = (int) categorySpinner.getSelectedItemPosition();
+        int selectedCategoryPosition = (int) categorySpinner.getSelectedItemPosition();
 
 
 
@@ -145,7 +148,7 @@ public class CreateActivity extends AppCompatActivity {
         //check(title,updateDate,content);
 
 
-        save(title,updateDate,selectedItemPosition,total);
+        save(title,updateDate,selectedCategoryPosition,total);
 
 
         //画面を終了する

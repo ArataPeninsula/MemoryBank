@@ -20,7 +20,7 @@ public class MemoAdapter extends ArrayAdapter<Topic> {
         layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-
+    //↓コンストラクタかな？？
     @Override
     public View getView(int position, View convertView,  ViewGroup parent) {
 
@@ -33,8 +33,8 @@ public class MemoAdapter extends ArrayAdapter<Topic> {
         TextView titleText = (TextView) convertView.findViewById(R.id.titleText);
         TextView categoryText = (TextView) convertView.findViewById(R.id.categoryText);
 
-        //level追加?
-        //TextView levelText = (TextView) convertView.findViewById(R.id.levelText);
+        //level追加
+        TextView levelText = (TextView) convertView.findViewById(R.id.levelText);
 
 
         titleText.setText(topic.title);
@@ -48,7 +48,8 @@ public class MemoAdapter extends ArrayAdapter<Topic> {
         categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
 
 
-        //categoryText.setText(topic.category);
+        // 鉄板度の表示
+        levelText.setText(String.valueOf(topic.level));
 
 
 

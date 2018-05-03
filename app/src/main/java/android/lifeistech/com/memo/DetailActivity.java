@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import io.realm.Realm;
 
@@ -14,6 +15,8 @@ public class DetailActivity extends AppCompatActivity {
 
     public EditText titleText;
     public Spinner categorySpinner;
+    public TextView levelText;
+
 
 
 
@@ -27,6 +30,9 @@ public class DetailActivity extends AppCompatActivity {
 
         titleText =(EditText) findViewById(R.id.titleEditText);
         categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+        levelText = (TextView) findViewById(R.id.levelText);
+
+
 
         showData();
 
@@ -41,6 +47,9 @@ public class DetailActivity extends AppCompatActivity {
         //contentText.setText(topic.content);
 
         categorySpinner.setSelection(topic.selectedCategoryPosition);
+
+        //鉄板度を表示
+        levelText.setText(String.valueOf(topic.level));
 
     }
 

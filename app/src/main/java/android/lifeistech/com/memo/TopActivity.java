@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +30,13 @@ public class TopActivity extends AppCompatActivity {
     TextView titleText;
     TextView categoryText;
     Spinner categorySpinner;
+    TextView levelText;
+
+
+    //level計算に使うint
+    int number1;
+    int number2;
+    int number3;
 
 
 
@@ -52,6 +60,7 @@ public class TopActivity extends AppCompatActivity {
         titleText = (TextView) findViewById(R.id.titleText);
         categoryText = (TextView) findViewById(R.id.categoryText);
         categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+        levelText = (TextView) findViewById(R.id.levelText);
 
 
     }
@@ -83,11 +92,8 @@ public class TopActivity extends AppCompatActivity {
 
 
         } else {
-
-
-
             Topic topic = null;
-            int selectedItemPosition2 = (int) categorySpinner.getSelectedItemPosition();
+            int selectedCategoryPosition = (int) categorySpinner.getSelectedItemPosition();
 
 
             //realmから検索
@@ -100,7 +106,7 @@ public class TopActivity extends AppCompatActivity {
                 Random random = new Random();
                 selectedNumber = random.nextInt(total);
                 topic = realm.where(Topic.class).equalTo("id", selectedNumber)
-                        .equalTo("selectedCategoryPosition",selectedItemPosition2).findFirst();
+                        .equalTo("selectedCategoryPosition",selectedCategoryPosition).findFirst();
 
 
 
@@ -114,6 +120,92 @@ public class TopActivity extends AppCompatActivity {
 
             // 保存してある番号から実際のCategoryを取得
             categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
+
+            //level表示
+            levelText.setText(String.valueOf(topic.level));
+
+
+        }
+
+    }
+
+
+
+    //nullの時アプリが落ちる！！！！
+
+
+    public void plus(View v){
+
+        if(levelText == null){
+
+
+
+        }else{
+        number1 = Integer.parseInt(levelText.getText().toString());
+
+        number1 = number1 + 1;
+
+
+        levelText.setText(String.valueOf(number1));
+
+        final Topic topic = realm.where(Topic.class).equalTo("title"
+                    ,titleText.getText().toString()).findFirst();
+
+        realm.executeTransaction(new Realm.Transaction(){
+            @Override
+            public void execute(Realm realm){
+               topic.level = number1;
+                }
+            });
+        }
+
+    }
+
+    public void minus(View v){
+
+        if(levelText != null){
+
+            number2 = Integer.parseInt(levelText.getText().toString());
+
+            number2 = number2 - 1;
+
+
+            levelText.setText(String.valueOf(number2));
+
+            final Topic topic = realm.where(Topic.class).equalTo("title"
+                    ,titleText.getText().toString()).findFirst();
+
+            realm.executeTransaction(new Realm.Transaction(){
+                @Override
+                public void execute(Realm realm){
+                    topic.level = number2;
+                }
+            });
+        }
+
+    }
+
+    public void reset(View v){
+
+        if(levelText == null){
+
+
+
+        }else{
+            number3 = 0;
+
+
+            levelText.setText(String.valueOf(number3));
+
+            final Topic topic = realm.where(Topic.class).equalTo("title"
+                    ,titleText.getText().toString()).findFirst();
+
+            realm.executeTransaction(new Realm.Transaction(){
+                @Override
+                public void execute(Realm realm){
+                    topic.level = number3;
+                }
+            });
         }
 
     }

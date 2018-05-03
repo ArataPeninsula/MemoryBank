@@ -28,6 +28,9 @@ public class Topic extends  RealmObject{
         //topicのidを宣言
         public int id;
 
+        //鉄板どの宣言
+        public int level;
+
 
 
 
