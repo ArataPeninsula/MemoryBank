@@ -3,20 +3,17 @@ package android.lifeistech.com.memo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class TopActivity extends AppCompatActivity {
 
@@ -29,14 +26,33 @@ public class TopActivity extends AppCompatActivity {
 
     TextView titleText;
     TextView categoryText;
-    Spinner categorySpinner;
     TextView levelText;
+
+
+    Spinner categorySpinner;
+    Spinner levelSpinner;
+
+
+
+
 
 
     //level計算に使うint
     int number1;
     int number2;
     int number3;
+
+    //ボタンの宣言→一回の思い出すにつき、一度しかボタンを押せなくする！
+
+    Button plusButton;
+    Button minusButton;
+    Button resetButton;
+
+
+    //while文が無限に回るのを防ぐために必要
+    int checkNumber;
+
+
 
 
 
@@ -59,9 +75,19 @@ public class TopActivity extends AppCompatActivity {
 
         titleText = (TextView) findViewById(R.id.titleText);
         categoryText = (TextView) findViewById(R.id.categoryText);
-        categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
         levelText = (TextView) findViewById(R.id.levelText);
 
+        categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
+        levelSpinner = (Spinner) findViewById(R.id.levelSpinner);
+
+
+        plusButton = (Button) findViewById(R.id.plusButton);
+        minusButton = (Button) findViewById(R.id.minusButton);
+        resetButton = (Button) findViewById(R.id.resetButton);
+
+        plusButton.setEnabled(false);
+        minusButton.setEnabled(false);
+        resetButton.setEnabled(false);
 
     }
 
@@ -85,6 +111,8 @@ public class TopActivity extends AppCompatActivity {
         //totalはidの最大値よりも1大きい数（記憶するときに+1されるから）。
         total = total--;
 
+        checkNumber = 0;
+
 
         if (total == 0) {
 
@@ -94,19 +122,73 @@ public class TopActivity extends AppCompatActivity {
         } else {
             Topic topic = null;
             int selectedCategoryPosition = (int) categorySpinner.getSelectedItemPosition();
+            int selectedLevelPosition = (int) levelSpinner.getSelectedItemPosition();
 
 
             //realmから検索
             //realmからソートを施した上で、ランダム検索したい！！！
+            //levelSpinnerによって場合分け
 
-
+///ここはwhileだとまずい！！！（条件に合致するものがない時無限に回り続ける。。）
+///乱数を発生させる回数は決まっている！！→for文にして、total回を上限にする。
+///どうやって終わらせる？　topicが見つかる  OR total回繰り返す　を設定できるか？？
             while (topic == null) {
 
 
-                Random random = new Random();
-                selectedNumber = random.nextInt(total);
-                topic = realm.where(Topic.class).equalTo("id", selectedNumber)
-                        .equalTo("selectedCategoryPosition",selectedCategoryPosition).findFirst();
+                //これではダメ！！　ランダムに重複があるから！　重複しない乱数を作る必要あり！
+                //0~totalまでのリストを作って、シャッフル。
+
+                checkNumber = checkNumber + 1;
+
+                if(checkNumber == total){
+                    break;
+                }
+
+
+
+                if(selectedLevelPosition == 0) {
+
+
+                    Random random = new Random();
+                    selectedNumber = random.nextInt(total);
+                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
+                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                            .findFirst();
+
+
+
+                }else if(selectedLevelPosition == 1){
+
+                    Random random = new Random();
+                    selectedNumber = random.nextInt(total);
+                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
+                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                            .lessThan("level",3)
+                            .greaterThan("level",-3)
+                            .findFirst();
+
+
+                }else if(selectedLevelPosition == 2){
+
+                    Random random = new Random();
+                    selectedNumber = random.nextInt(total);
+                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
+                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                            .greaterThan("level",2)
+                            .findFirst();
+
+
+                }else if(selectedLevelPosition == 3){
+
+                    Random random = new Random();
+                    selectedNumber = random.nextInt(total);
+                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
+                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                            .lessThan("level",-2)
+                            .findFirst();
+
+                }
+
 
 
 
@@ -124,6 +206,12 @@ public class TopActivity extends AppCompatActivity {
             //level表示
             levelText.setText(String.valueOf(topic.level));
 
+            //ボタンを操作可能にする
+            plusButton.setEnabled(true);
+            minusButton.setEnabled(true);
+            resetButton.setEnabled(true);
+
+
 
         }
 
@@ -135,12 +223,14 @@ public class TopActivity extends AppCompatActivity {
 
 
     public void plus(View v){
+//トーストがうまくいかない！！
+        //selectを押さない限りButtonは動かせないのでnullは考えなくてもよいかも？
+        
+        if(levelText == null) {
 
-        if(levelText == null){
+            titleText.setText("思い出してください！");
 
-
-
-        }else{
+        } else{
         number1 = Integer.parseInt(levelText.getText().toString());
 
         number1 = number1 + 1;
@@ -156,7 +246,14 @@ public class TopActivity extends AppCompatActivity {
             public void execute(Realm realm){
                topic.level = number1;
                 }
+
+
             });
+
+        //改めてselectを押さない限りボタンは押せない
+            plusButton.setEnabled(false);
+            minusButton.setEnabled(false);
+            resetButton.setEnabled(false);
         }
 
     }
@@ -181,6 +278,12 @@ public class TopActivity extends AppCompatActivity {
                     topic.level = number2;
                 }
             });
+
+            //
+            plusButton.setEnabled(false);
+            minusButton.setEnabled(false);
+            resetButton.setEnabled(false);
+
         }
 
     }
@@ -206,6 +309,10 @@ public class TopActivity extends AppCompatActivity {
                     topic.level = number3;
                 }
             });
+
+            plusButton.setEnabled(false);
+            minusButton.setEnabled(false);
+            resetButton.setEnabled(false);
         }
 
     }

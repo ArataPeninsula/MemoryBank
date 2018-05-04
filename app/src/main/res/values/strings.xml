@@ -10,4 +10,12 @@
         <item>まじめ</item>
         <item>アイデア</item>
     </string-array>
+
+    //levelSpinnerの選択肢
+    <string-array name="list2">
+        <item>all</item>
+        <item>new(-2~+2)</item>
+        <item>good(+3~)</item>
+        <item>challenging(~-3)</item>
+    </string-array>
 </resources>
