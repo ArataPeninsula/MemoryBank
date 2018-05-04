@@ -11,6 +11,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 import io.realm.Realm;
@@ -50,7 +53,10 @@ public class TopActivity extends AppCompatActivity {
 
 
     //while文が無限に回るのを防ぐために必要
-    int checkNumber;
+    //int checkNumber;
+
+    //ランダムを利用したい
+    ArrayList<Integer> arrayList;
 
 
 
@@ -111,110 +117,130 @@ public class TopActivity extends AppCompatActivity {
         //totalはidの最大値よりも1大きい数（記憶するときに+1されるから）。
         total = total--;
 
-        checkNumber = 0;
+        //checkNumber = 0;
 
 
-        if (total == 0) {
+        if (total <= -1) {
 
             titleText.setText("記録がありません！");
 
 
         } else {
             Topic topic = null;
+
             int selectedCategoryPosition = (int) categorySpinner.getSelectedItemPosition();
             int selectedLevelPosition = (int) levelSpinner.getSelectedItemPosition();
 
 
-            //realmから検索
-            //realmからソートを施した上で、ランダム検索したい！！！
-            //levelSpinnerによって場合分け
 
-///ここはwhileだとまずい！！！（条件に合致するものがない時無限に回り続ける。。）
-///乱数を発生させる回数は決まっている！！→for文にして、total回を上限にする。
-///どうやって終わらせる？　topicが見つかる  OR total回繰り返す　を設定できるか？？
-            while (topic == null) {
+            arrayList = new ArrayList<>();
+            for(int i = 0; i < total+1; i ++){
 
-
-                //これではダメ！！　ランダムに重複があるから！　重複しない乱数を作る必要あり！
-                //0~totalまでのリストを作って、シャッフル。
-
-                checkNumber = checkNumber + 1;
-
-                if(checkNumber == total){
-                    break;
-                }
-
-
-
-                if(selectedLevelPosition == 0) {
-
-
-                    Random random = new Random();
-                    selectedNumber = random.nextInt(total);
-                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
-                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
-                            .findFirst();
-
-
-
-                }else if(selectedLevelPosition == 1){
-
-                    Random random = new Random();
-                    selectedNumber = random.nextInt(total);
-                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
-                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
-                            .lessThan("level",3)
-                            .greaterThan("level",-3)
-                            .findFirst();
-
-
-                }else if(selectedLevelPosition == 2){
-
-                    Random random = new Random();
-                    selectedNumber = random.nextInt(total);
-                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
-                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
-                            .greaterThan("level",2)
-                            .findFirst();
-
-
-                }else if(selectedLevelPosition == 3){
-
-                    Random random = new Random();
-                    selectedNumber = random.nextInt(total);
-                    topic = realm.where(Topic.class).equalTo("id", selectedNumber)
-                            .equalTo("selectedCategoryPosition", selectedCategoryPosition)
-                            .lessThan("level",-2)
-                            .findFirst();
-
-                }
-
-
-
-
+                arrayList.add(i);
 
             }
-            titleText.setText(topic.title);
 
-            // res/array/list.xmlに定義したものから配列をつくる
-
-            String[] categoryArray = this.getResources().getStringArray(R.array.list);
-
-            // 保存してある番号から実際のCategoryを取得
-            categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
-
-            //level表示
-            levelText.setText(String.valueOf(topic.level));
-
-            //ボタンを操作可能にする
-            plusButton.setEnabled(true);
-            minusButton.setEnabled(true);
-            resetButton.setEnabled(true);
+            Collections.shuffle(arrayList);
 
 
+            if(selectedLevelPosition == 0) {
 
+                    for (int i = 0; i < total+1; i++ ){
+
+
+//                        Random random = new Random();
+//                        selectedNumber = random.nextInt(total);
+                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                                .findFirst();
+
+
+                        if(topic != null){
+                            break;
+                        }
+                    }
+                }else if(selectedLevelPosition == 1){
+
+                    for(int i = 0; i < total+1 ;i++ ) {
+//                    Random random = new Random();
+//                    selectedNumber = random.nextInt(total);
+                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                                .lessThan("level", 3)
+                                .greaterThan("level", -3)
+                                .findFirst();
+
+                        if(topic != null){
+                            break;
+                        }
+
+                    }
+                }else if(selectedLevelPosition == 2){
+
+
+                    for(int i = 0; i < total + 1; i++) {
+
+//                    Random random = new Random();
+//                    selectedNumber = random.nextInt(total);
+                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                                .greaterThan("level", 2)
+                                .findFirst();
+
+                        if(topic != null){
+                            break;
+                        }
+                    }
+                }else if(selectedLevelPosition == 3){
+
+                    for(int i = 0; i < total + 1; i++) {
+//                    Random random = new Random();
+//                    selectedNumber = random.nextInt(total);
+                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+                                .lessThan("level", -2)
+                                .findFirst();
+
+                        if(topic != null){
+                            break;
+                        }
+                    }
+                }
+
+                //該当するtopicがあったか否かで場合分け
+                //ヌルならボタンを押せなくする
+                if(topic == null){
+
+                    titleText.setText("該当する記録がありません！");
+                    plusButton.setEnabled(false);
+                    minusButton.setEnabled(false);
+                    resetButton.setEnabled(false);
+
+
+                }else {
+
+                    //該当するtopicがあれば、各種表示+ボタンをアクティブに
+
+
+                    titleText.setText(topic.title);
+
+                    // res/array/list.xmlに定義したものから配列をつくる
+
+                    String[] categoryArray = this.getResources().getStringArray(R.array.list);
+
+                    // 保存してある番号から実際のCategoryを取得
+                    categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
+
+                    //level表示
+                    levelText.setText(String.valueOf(topic.level));
+
+                    //ボタンを操作可能にする
+                    plusButton.setEnabled(true);
+                    minusButton.setEnabled(true);
+                    resetButton.setEnabled(true);
+
+                }
         }
-
     }
 
 

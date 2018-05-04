@@ -123,11 +123,7 @@ public class CreateActivity extends AppCompatActivity {
         SimpleDateFormat sdf =  new SimpleDateFormat("yyy-MM-dd HH:mm:ss", Locale.JAPANESE);
         String updateDate = sdf.format(date);
 
-        //contentの取得はコメントアウト
 
-        //String content = contentEditText.getText().toString();
-
-        //カテゴリーを取得
 
         //Spinnerにはどんな型でも入れられる→getSelectedItem():オブジェクト型(多くの変数型のSuper.)を取得
         // ＋（String)でString型にCast
@@ -138,11 +134,6 @@ public class CreateActivity extends AppCompatActivity {
         //topicのidを取得
 
         total = maxNumber.getInt("goukei",0);
-
-
-
-        //int id2 = total;
-
 
 
         //check(title,updateDate,content);
