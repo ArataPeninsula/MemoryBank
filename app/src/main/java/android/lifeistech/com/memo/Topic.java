@@ -19,7 +19,7 @@ public class Topic extends  RealmObject{
 
 
         //category は「ジャンル」に相当するパーツ(contentをcategoryに書き換えればよい）
-        public String category;
+        //public String category;
 
 
         //categoryの配列（list）の番号

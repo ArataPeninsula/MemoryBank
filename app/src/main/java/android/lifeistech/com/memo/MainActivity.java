@@ -2,6 +2,7 @@ package android.lifeistech.com.memo;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,12 @@ public class MainActivity extends AppCompatActivity {
 
     MemoAdapter adapter;
 
+    //id-adjustのためにSharedPreferencesを利用
+
+    SharedPreferences maxNumber;
+    SharedPreferences.Editor editor;
+
+
 
 
     @Override
@@ -33,6 +40,13 @@ public class MainActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
         listView = (ListView) findViewById(R.id.listView);
+
+        //SharedPreferencesのインスタンス形成
+
+        maxNumber = getSharedPreferences("maxNumber",MODE_PRIVATE);
+        editor = maxNumber.edit();
+
+
 
 
         //onResumeのshowメソッドをonCreateでも行う。削除機能のために。
@@ -91,9 +105,32 @@ public class MainActivity extends AppCompatActivity {
 
                                 realm.commitTransaction();
 
+                                //id-adjust操作
+
+                                //Viewから取得したadapterの情報にidが含まれているのか不安。。
+                                int deletedId = topic.id;
+
+                                int total = maxNumber.getInt("goukei",0);
+
+                                for(int i = deletedId + 1; i < total; i++){
+                                    final Topic topic2 = realm.where(Topic.class).equalTo("id",i).findFirst();
+
+                                    realm.executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+
+                                            topic2.id = topic2.id - 1;
+
+                                        }
+                                    });
+                                }
 
 
+                                //totalを1減らしてSharedPreferencesに保存。
+                                total = total - 1;
 
+                                editor.putInt("goukei",total);
+                                editor.apply();
 
 
                             }

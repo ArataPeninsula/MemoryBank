@@ -9,19 +9,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.Collections;
-import java.util.Random;
+
 
 import io.realm.Realm;
 
 public class TopActivity extends AppCompatActivity {
 
     public Realm realm;
-    public int selectedNumber;
+
 
     SharedPreferences maxNumber;
     SharedPreferences.Editor editor;
@@ -34,9 +34,6 @@ public class TopActivity extends AppCompatActivity {
 
     Spinner categorySpinner;
     Spinner levelSpinner;
-
-
-
 
 
 
@@ -109,8 +106,7 @@ public class TopActivity extends AppCompatActivity {
 
     public void select(View v) {
 
-        //乱数を発生させて、それに一致するidをもつtopicを表示
-        //swich?はどのような働きがあるの？？？？
+
 
         total = maxNumber.getInt("goukei", 0);
 
@@ -148,8 +144,7 @@ public class TopActivity extends AppCompatActivity {
                     for (int i = 0; i < total+1; i++ ){
 
 
-//                        Random random = new Random();
-//                        selectedNumber = random.nextInt(total);
+
                         topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .findFirst();
@@ -162,8 +157,7 @@ public class TopActivity extends AppCompatActivity {
                 }else if(selectedLevelPosition == 1){
 
                     for(int i = 0; i < total+1 ;i++ ) {
-//                    Random random = new Random();
-//                    selectedNumber = random.nextInt(total);
+
                         topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .lessThan("level", 3)
@@ -180,8 +174,7 @@ public class TopActivity extends AppCompatActivity {
 
                     for(int i = 0; i < total + 1; i++) {
 
-//                    Random random = new Random();
-//                    selectedNumber = random.nextInt(total);
+
                         topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .greaterThan("level", 2)
@@ -194,8 +187,7 @@ public class TopActivity extends AppCompatActivity {
                 }else if(selectedLevelPosition == 3){
 
                     for(int i = 0; i < total + 1; i++) {
-//                    Random random = new Random();
-//                    selectedNumber = random.nextInt(total);
+
                         topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .lessThan("level", -2)
@@ -208,7 +200,7 @@ public class TopActivity extends AppCompatActivity {
                 }
 
                 //該当するtopicがあったか否かで場合分け
-                //ヌルならボタンを押せなくする
+                //nullならボタンを押せなくする
                 if(topic == null){
 
                     titleText.setText("該当する記録がありません！");
@@ -249,7 +241,7 @@ public class TopActivity extends AppCompatActivity {
 
 
     public void plus(View v){
-//トーストがうまくいかない！！
+
         //selectを押さない限りButtonは動かせないのでnullは考えなくてもよいかも？
         
         if(levelText == null) {

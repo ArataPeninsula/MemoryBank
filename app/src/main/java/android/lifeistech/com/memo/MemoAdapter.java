@@ -20,7 +20,7 @@ public class MemoAdapter extends ArrayAdapter<Topic> {
         layoutinflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    //↓コンストラクタかな？？
+
     @Override
     public View getView(int position, View convertView,  ViewGroup parent) {
 
