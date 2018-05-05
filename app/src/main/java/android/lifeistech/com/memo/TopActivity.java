@@ -23,9 +23,16 @@ public class TopActivity extends AppCompatActivity {
     public Realm realm;
 
 
+    //idの最大値を記憶してくれる
     SharedPreferences maxNumber;
     SharedPreferences.Editor editor;
     public int total;
+
+    //selectされたtopicのupdateDateを教えてくれる
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor2;
+    public int updateDate;
+
 
     TextView titleText;
     TextView categoryText;
@@ -74,6 +81,11 @@ public class TopActivity extends AppCompatActivity {
         //SharedPreferences のインスタンス形成
         maxNumber = getSharedPreferences("maxNumber", Context.MODE_PRIVATE);
         editor = maxNumber.edit();
+
+        //updateDateようのeditor
+
+        prefs = getSharedPreferences("MemorizedDate",Context.MODE_PRIVATE);
+        editor2 = prefs.edit();
 
 
         titleText = (TextView) findViewById(R.id.titleText);
@@ -231,13 +243,21 @@ public class TopActivity extends AppCompatActivity {
                     minusButton.setEnabled(true);
                     resetButton.setEnabled(true);
 
+                    //selectされたtopicのupdateDateを,SharedPreferencesに送る→button群操作の時に使用
+
+                    editor2.putString("time",topic.updateDate);
+                    editor2.apply();
+
+
+
                 }
         }
     }
 
 
 
-    //nullの時アプリが落ちる！！！！
+    //同じtitle,levelのtopicを区別する手段がない！
+    //selectの時にrealmからどのtopicが参照されたのかを伝えられればいいのだが……。
 
 
     public void plus(View v){
@@ -256,8 +276,12 @@ public class TopActivity extends AppCompatActivity {
 
         levelText.setText(String.valueOf(number1));
 
-        final Topic topic = realm.where(Topic.class).equalTo("title"
-                    ,titleText.getText().toString()).findFirst();
+        //ここでselectで覚えさせた、updateDateをもとに変更を加えるtopicを検索。
+        String updateDate = prefs.getString("time","");
+
+
+        final Topic topic = realm.where(Topic.class).equalTo("updateDate"
+                    ,updateDate).findFirst();
 
         realm.executeTransaction(new Realm.Transaction(){
             @Override
@@ -287,8 +311,12 @@ public class TopActivity extends AppCompatActivity {
 
             levelText.setText(String.valueOf(number2));
 
-            final Topic topic = realm.where(Topic.class).equalTo("title"
-                    ,titleText.getText().toString()).findFirst();
+            String updateDate = prefs.getString("time","");
+
+
+            final Topic topic = realm.where(Topic.class).equalTo("updateDate"
+                    ,updateDate).findFirst();
+
 
             realm.executeTransaction(new Realm.Transaction(){
                 @Override
@@ -318,8 +346,12 @@ public class TopActivity extends AppCompatActivity {
 
             levelText.setText(String.valueOf(number3));
 
-            final Topic topic = realm.where(Topic.class).equalTo("title"
-                    ,titleText.getText().toString()).findFirst();
+            String updateDate = prefs.getString("time","");
+
+
+            final Topic topic = realm.where(Topic.class).equalTo("updateDate"
+                    ,updateDate).findFirst();
+
 
             realm.executeTransaction(new Realm.Transaction(){
                 @Override
