@@ -42,8 +42,20 @@
                 android:layout_height="wrap_content"
                 android:onClick="categoryAdd"
                 android:text="+" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="11dp"
+                android:layout_weight="1"
+                android:onClick="close"
+                app:srcCompat="@android:drawable/btn_dialog" />
         </LinearLayout>
 
 
     </LinearLayout>
+
 </RelativeLayout>

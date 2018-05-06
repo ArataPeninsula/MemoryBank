@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -78,6 +79,8 @@ public class TopActivity extends AppCompatActivity {
 
 
 
+
+
     //とりあえずFloating Button で MainActivityに飛ぶ
     //余裕があればスワイプでの画面遷移を施す
 
@@ -125,6 +128,7 @@ public class TopActivity extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item);
 
         //今の所ここに書いてあるものがSharedPreferences上に記憶され、呼び出されている。
+        //onCreateが呼ばれるたびにデフォの選択肢が追加され続けてしまうのでは？？　Jsonのおかげ？　重複不可？？
 
         arrayList2.add("");
         arrayList2.add("悲しい");
@@ -149,6 +153,8 @@ public class TopActivity extends AppCompatActivity {
 
 
         categorySpinner.setAdapter(arrayAdapter);
+
+
 
 
 

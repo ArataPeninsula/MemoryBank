@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -33,13 +34,20 @@ public class SettingActivity extends AppCompatActivity {
     Gson gson;
 
 
+    //
+    ListView listView;
+    EditText categoryEditText;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
 
 //
 
@@ -85,15 +93,63 @@ public class SettingActivity extends AppCompatActivity {
         }
 
         listView.setAdapter(adapter);
+
+
+        //
+        //
+        categoryEditText = (EditText) findViewById(R.id.categoryEditText);
+
+
+
     }
 
 
     public void categoryAdd(View v){
 
         //ジャンルを動的に編集（追加）する
+        arrayList = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+        arrayList.add(categoryEditText.getText().toString());
 
 
+        editor.putString("category",gson.toJson(arrayList));
+        editor.apply();
+
+
+
+        //EditTextから文字を消去
+        categoryEditText.setText("");
+
+        //リストを更新
+
+        arrayList = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+
+
+        for(int i = 0; i < arrayList.size(); i++) {
+
+            adapter.add(arrayList.get(i));
+
+
+        }
+
+        listView.setAdapter(adapter);
+
+
+
+    }
+
+    public void close(View v){
 
         finish();
+    }
+
+    public void reshow(){
+
+
+
+
     }
 }
