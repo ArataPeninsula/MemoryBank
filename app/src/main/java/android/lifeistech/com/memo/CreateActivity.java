@@ -25,7 +25,8 @@ public class CreateActivity extends AppCompatActivity {
 
 
     //SharedPreferences を宣言
-    SharedPreferences maxNumber;
+    //命名変更
+    SharedPreferences pref;
 
     SharedPreferences.Editor editor;
     public int total;
@@ -64,8 +65,8 @@ public class CreateActivity extends AppCompatActivity {
 
 
         //SharedPreferences のインスタンス形成
-        maxNumber = getSharedPreferences("maxNumber", Context.MODE_PRIVATE);
-
+        pref = getSharedPreferences("pref_mb", Context.MODE_PRIVATE);
+        editor = pref.edit();
 
 
 
@@ -98,7 +99,8 @@ public class CreateActivity extends AppCompatActivity {
                 total = id3 + 1;
 
 
-                editor = maxNumber.edit();
+                //↓ここなら少なくとも動作した
+                //editor = pref.edit();
 
                 editor.putInt("goukei",total);
                 editor.apply();
@@ -133,7 +135,7 @@ public class CreateActivity extends AppCompatActivity {
 
         //topicのidを取得
 
-        total = maxNumber.getInt("goukei",0);
+        total = pref.getInt("goukei",0);
 
 
         //check(title,updateDate,content);

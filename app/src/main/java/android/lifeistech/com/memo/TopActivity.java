@@ -24,13 +24,13 @@ public class TopActivity extends AppCompatActivity {
 
 
     //idの最大値を記憶してくれる
-    SharedPreferences maxNumber;
+    SharedPreferences pref;
     SharedPreferences.Editor editor;
     public int total;
 
     //selectされたtopicのupdateDateを教えてくれる
-    SharedPreferences prefs;
-    SharedPreferences.Editor editor2;
+    //SharedPreferences prefs;
+    //SharedPreferences.Editor editor2;
     public int updateDate;
 
 
@@ -79,13 +79,13 @@ public class TopActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
         //SharedPreferences のインスタンス形成
-        maxNumber = getSharedPreferences("maxNumber", Context.MODE_PRIVATE);
-        editor = maxNumber.edit();
+        pref = getSharedPreferences("pref_mb", Context.MODE_PRIVATE);
+        editor = pref.edit();
 
         //updateDateようのeditor
 
-        prefs = getSharedPreferences("MemorizedDate",Context.MODE_PRIVATE);
-        editor2 = prefs.edit();
+//        prefs = getSharedPreferences("MemorizedDate",Context.MODE_PRIVATE);
+//        editor2 = prefs.edit();
 
 
         titleText = (TextView) findViewById(R.id.titleText);
@@ -123,7 +123,7 @@ public class TopActivity extends AppCompatActivity {
 
 
 
-        total = maxNumber.getInt("goukei", 0);
+        total = pref.getInt("goukei", 0);
 
         //totalはidの最大値よりも1大きい数（記憶するときに+1されるから）。
         total = total--;
@@ -145,6 +145,8 @@ public class TopActivity extends AppCompatActivity {
 
 
             arrayList = new ArrayList<>();
+
+            //+1はいらないのでは？？
             for(int i = 0; i < total+1; i ++){
 
                 arrayList.add(i);
@@ -248,8 +250,8 @@ public class TopActivity extends AppCompatActivity {
 
                     //selectされたtopicのupdateDateを,SharedPreferencesに送る→button群操作の時に使用
 
-                    editor2.putString("time",topic.updateDate);
-                    editor2.apply();
+                    editor.putString("time",topic.updateDate);
+                    editor.apply();
 
 
 
@@ -280,7 +282,7 @@ public class TopActivity extends AppCompatActivity {
         levelText.setText(String.valueOf(number1));
 
         //ここでselectで覚えさせた、updateDateをもとに変更を加えるtopicを検索。
-        String updateDate = prefs.getString("time","");
+        String updateDate = pref.getString("time","");
 
 
         final Topic topic = realm.where(Topic.class).equalTo("updateDate"
@@ -314,7 +316,7 @@ public class TopActivity extends AppCompatActivity {
 
             levelText.setText(String.valueOf(number2));
 
-            String updateDate = prefs.getString("time","");
+            String updateDate = pref.getString("time","");
 
 
             final Topic topic = realm.where(Topic.class).equalTo("updateDate"
@@ -349,7 +351,7 @@ public class TopActivity extends AppCompatActivity {
 
             levelText.setText(String.valueOf(number3));
 
-            String updateDate = prefs.getString("time","");
+            String updateDate = pref.getString("time","");
 
 
             final Topic topic = realm.where(Topic.class).equalTo("updateDate"

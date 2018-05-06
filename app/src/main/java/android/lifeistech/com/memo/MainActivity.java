@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     //id-adjustのためにSharedPreferencesを利用
 
-    SharedPreferences maxNumber;
+    SharedPreferences pref;
     SharedPreferences.Editor editor;
 
 
@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         //SharedPreferencesのインスタンス形成
 
-        maxNumber = getSharedPreferences("maxNumber",MODE_PRIVATE);
-        editor = maxNumber.edit();
+        pref = getSharedPreferences("pref_mb",MODE_PRIVATE);
+        editor = pref.edit();
 
 
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                                 //Viewから取得したadapterの情報にidが含まれているのか不安。。
                                 int deletedId = topic.id;
 
-                                int total = maxNumber.getInt("goukei",0);
+                                int total = pref.getInt("goukei",0);
 
                                 for(int i = deletedId + 1; i < total; i++){
                                     final Topic topic2 = realm.where(Topic.class).equalTo("id",i).findFirst();
