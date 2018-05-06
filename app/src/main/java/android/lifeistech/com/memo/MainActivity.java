@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        //CreateActivityから帰って来た時、遷移前にはfinishしていないので、onCreateではまずい
+
         setMemoList();
     }
 
@@ -195,6 +197,11 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this,TopActivity.class);
         startActivity(intent);
+
+
+        //！finish() して大丈夫？？？
+
+        finish();
 
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Memo</string>
+    <string name="app_name">MemoryBank</string>
 
 
     //Spinner（ジャンルを選択肢から選ぶ）を利用するときの選択肢↓　

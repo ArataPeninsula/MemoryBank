@@ -113,6 +113,9 @@ public class TopActivity extends AppCompatActivity {
 
         startActivity(intent);
 
+        //finish()して大丈夫???
+        finish();
+
     }
 
 
