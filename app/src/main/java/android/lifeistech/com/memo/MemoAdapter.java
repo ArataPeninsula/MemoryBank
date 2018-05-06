@@ -2,6 +2,7 @@ package android.lifeistech.com.memo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MemoAdapter extends ArrayAdapter<Topic> {
@@ -41,8 +46,28 @@ public class MemoAdapter extends ArrayAdapter<Topic> {
 
         //contentText.setText(topic.content);
 
-        // res/array/list.xmlに定義したものから配列をつくる
-         String[] categoryArray = getContext().getResources().getStringArray(R.array.list);
+
+
+//        // res/array/list.xmlに定義したものから配列をつくる
+//         String[] categoryArray = getContext().getResources().getStringArray(R.array.list);
+
+        //Jsonを利用してSharedPreferencesからAllayListを取得
+
+
+        SharedPreferences pref;
+        pref = getContext().getSharedPreferences("pref_mb", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+
+         ArrayList<String> arrayList = gson.fromJson(pref.getString("category","")
+                 ,new TypeToken<ArrayList<String>>(){}.getType());
+
+
+         //出て来たarrayListはどうやらobject型らしい。Cast
+
+        //ArrayList<> to Object[] これは使用上仕方ない！脳死してコピペしてる（引数にStringの空配列を入れてるらしい）。
+
+        String[] categoryArray = (String[]) arrayList.toArray(new String[]{});
+
 
         // 保存してある番号から実際のCategoryを取得
         categoryText.setText(categoryArray[topic.selectedCategoryPosition]);

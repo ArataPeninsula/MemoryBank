@@ -41,7 +41,7 @@ public class SettingActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.listView);
 
-//        
+//
 
         //SharedPreferences のインスタンス形成
         pref = getSharedPreferences("pref_mb", Context.MODE_PRIVATE);

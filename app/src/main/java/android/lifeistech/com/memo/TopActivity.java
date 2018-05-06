@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 
@@ -69,6 +70,8 @@ public class TopActivity extends AppCompatActivity {
 
     ArrayList<String> arrayList2;
 
+    ArrayAdapter<String> arrayAdapter;
+
 
 
 
@@ -119,7 +122,9 @@ public class TopActivity extends AppCompatActivity {
 
         arrayList2 = new ArrayList<>();
 
-        //とりあえず適当に入れる。
+        arrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item);
+
+        //今の所ここに書いてあるものがSharedPreferences上に記憶され、呼び出されている。
 
         arrayList2.add("");
         arrayList2.add("悲しい");
@@ -128,18 +133,22 @@ public class TopActivity extends AppCompatActivity {
         arrayList2.add("ハプニング");
 
 
-
-
-
-        //SettingActivity上のListViewを表示させるためのArrayAdapter
-        //ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item);
-
-
-        //arrayListをGsonを通じてJsonに変換することでSharedPreferencesに保存可能に？？
         editor.putString("category",gson.toJson(arrayList2));
         editor.apply();
 
+        //TopActivity上のspinnerに表示
 
+        arrayList2 = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+        for(int i = 0; i < arrayList2.size(); i++){
+
+            arrayAdapter.add(arrayList2.get(i));
+
+        }
+
+
+        categorySpinner.setAdapter(arrayAdapter);
 
 
 

@@ -1,11 +1,18 @@
 package android.lifeistech.com.memo;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 import io.realm.Realm;
 
@@ -17,6 +24,18 @@ public class DetailActivity extends AppCompatActivity {
     public Spinner categorySpinner;
     public TextView levelText;
 
+
+    SharedPreferences pref;
+
+    SharedPreferences.Editor editor;
+
+
+    //カテゴリーを動的に表示することを目指す。
+    ArrayList<String> arrayList;
+
+    ArrayAdapter adapter;
+
+    Gson gson;
 
 
 
@@ -31,6 +50,32 @@ public class DetailActivity extends AppCompatActivity {
         titleText =(EditText) findViewById(R.id.titleEditText);
         categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
         levelText = (TextView) findViewById(R.id.levelText);
+
+
+        //GsonでcategorySpinnerにリストを表示
+        pref = getSharedPreferences("pref_mb",MODE_PRIVATE);
+        gson = new Gson();
+
+        arrayList = new ArrayList<>();
+
+        adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item);
+
+
+        arrayList = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+
+        for(int i = 0; i < arrayList.size(); i++){
+
+            adapter.add(arrayList.get(i));
+
+        }
+
+
+
+        categorySpinner.setAdapter(adapter);
+
+
 
 
 

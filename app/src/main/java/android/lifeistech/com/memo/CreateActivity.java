@@ -31,17 +31,16 @@ public class CreateActivity extends AppCompatActivity {
 
 
     //SharedPreferences を宣言
-
+    //命名変更
     SharedPreferences pref;
 
     SharedPreferences.Editor editor;
+
     public int total;
 
 
 
 
-
-    //
     public Spinner categorySpinner;
 
     //カテゴリーを動的に表示することを目指す。
@@ -80,7 +79,7 @@ public class CreateActivity extends AppCompatActivity {
         pref = getSharedPreferences("pref_mb", Context.MODE_PRIVATE);
         editor = pref.edit();
 
-        //Gsonインスタンス形成
+        //gsonインスタンス形成
 
          gson = new Gson();
 
