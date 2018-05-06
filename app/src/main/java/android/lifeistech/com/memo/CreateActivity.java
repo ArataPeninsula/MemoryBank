@@ -2,15 +2,21 @@ package android.lifeistech.com.memo;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -25,7 +31,7 @@ public class CreateActivity extends AppCompatActivity {
 
 
     //SharedPreferences を宣言
-    //命名変更
+
     SharedPreferences pref;
 
     SharedPreferences.Editor editor;
@@ -34,12 +40,18 @@ public class CreateActivity extends AppCompatActivity {
 
 
 
-    //contentEditTextはコメントアウトしておく
-    //public EditText contentEditText;
-
 
     //
     public Spinner categorySpinner;
+
+    //カテゴリーを動的に表示することを目指す。
+    ArrayList<String> arrayList;
+
+    ArrayAdapter adapter;
+
+    Gson gson;
+
+
 
 
 
@@ -67,6 +79,50 @@ public class CreateActivity extends AppCompatActivity {
         //SharedPreferences のインスタンス形成
         pref = getSharedPreferences("pref_mb", Context.MODE_PRIVATE);
         editor = pref.edit();
+
+        //Gsonインスタンス形成
+
+         gson = new Gson();
+
+        arrayList = new ArrayList<>();
+
+//        //とりあえず適当に入れる。
+//
+//        arrayList.add("");
+//        arrayList.add("悲しい");
+//        arrayList.add("怒った");
+//        arrayList.add("アイデア");
+
+
+        //SettingActivity上のListViewを表示させるためのArrayAdapter
+        adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item);
+
+
+        //arrayListをGsonを通じてJsonに変換することでSharedPreferencesに保存可能に？？
+//        editor.putString("category",gson.toJson(arrayList));
+//        editor.apply();
+
+
+        //SharedPreferencesからJsonを読み込んで、ArrayListへと再変換??
+
+        arrayList = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+
+
+        for(int i = 0; i < arrayList.size(); i++) {
+
+            adapter.add(arrayList.get(i));
+
+
+        }
+
+        categorySpinner.setAdapter(adapter);
+
+
+
+
+
 
 
 
@@ -162,6 +218,16 @@ public class CreateActivity extends AppCompatActivity {
         Log.d("Topic",topic.updateDate);
         //Log.d("Topic",topic.content);
 
+    }
+
+    //SettingActivityへ遷移。仮に。
+    public void move(View v){
+
+        Intent intent = new Intent(this,SettingActivity.class);
+
+        startActivity(intent);
+
+        finish();
     }
 
     @Override

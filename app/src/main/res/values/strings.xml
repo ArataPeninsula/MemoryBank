@@ -2,7 +2,7 @@
     <string name="app_name">MemoryBank</string>
 
 
-    //Spinner（ジャンルを選択肢から選ぶ）を利用するときの選択肢↓　
+    Spinner（ジャンルを選択肢から選ぶ）を利用するときの選択肢↓　
     <string-array name="list">
         <item>　</item>
         <item>悲しい</item>

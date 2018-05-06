@@ -34,7 +34,6 @@
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/list"
             android:spinnerMode="dialog" />
 
         <Button
@@ -45,5 +44,12 @@
             android:onClick="create"
             android:text="作成"
             android:textColor="@android:color/background_light" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="move"
+            android:text="設定" />
     </LinearLayout>
 </RelativeLayout>

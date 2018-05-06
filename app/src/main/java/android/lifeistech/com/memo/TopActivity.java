@@ -6,10 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -23,15 +26,14 @@ public class TopActivity extends AppCompatActivity {
     public Realm realm;
 
 
-    //idの最大値を記憶してくれる
+
     SharedPreferences pref;
     SharedPreferences.Editor editor;
+
+    //idの最大値を記憶してくれる
     public int total;
 
-    //selectされたtopicのupdateDateを教えてくれる
-    //SharedPreferences prefs;
-    //SharedPreferences.Editor editor2;
-    public int updateDate;
+
 
 
     TextView titleText;
@@ -56,11 +58,17 @@ public class TopActivity extends AppCompatActivity {
     Button resetButton;
 
 
-    //while文が無限に回るのを防ぐために必要
-    //int checkNumber;
+
 
     //ランダムを利用したい
     ArrayList<Integer> arrayList;
+
+
+    //categoryを動的表示＋編集
+    Gson gson;
+
+    ArrayList<String> arrayList2;
+
 
 
 
@@ -82,10 +90,7 @@ public class TopActivity extends AppCompatActivity {
         pref = getSharedPreferences("pref_mb", Context.MODE_PRIVATE);
         editor = pref.edit();
 
-        //updateDateようのeditor
 
-//        prefs = getSharedPreferences("MemorizedDate",Context.MODE_PRIVATE);
-//        editor2 = prefs.edit();
 
 
         titleText = (TextView) findViewById(R.id.titleText);
@@ -103,6 +108,40 @@ public class TopActivity extends AppCompatActivity {
         plusButton.setEnabled(false);
         minusButton.setEnabled(false);
         resetButton.setEnabled(false);
+
+
+        //Jsonを利用してcategoryをDBに記録＋編集可能に!!!!
+
+        //Gsonインスタンス形成
+
+
+        gson = new Gson();
+
+        arrayList2 = new ArrayList<>();
+
+        //とりあえず適当に入れる。
+
+        arrayList2.add("");
+        arrayList2.add("悲しい");
+        arrayList2.add("怒った");
+        arrayList2.add("アイデア");
+        arrayList2.add("ハプニング");
+
+
+
+
+
+        //SettingActivity上のListViewを表示させるためのArrayAdapter
+        //ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item);
+
+
+        //arrayListをGsonを通じてJsonに変換することでSharedPreferencesに保存可能に？？
+        editor.putString("category",gson.toJson(arrayList2));
+        editor.apply();
+
+
+
+
 
     }
 
@@ -128,7 +167,7 @@ public class TopActivity extends AppCompatActivity {
         //totalはidの最大値よりも1大きい数（記憶するときに+1されるから）。
         total = total--;
 
-        //checkNumber = 0;
+
 
 
         if (total <= -1) {
@@ -263,6 +302,7 @@ public class TopActivity extends AppCompatActivity {
 
     //同じtitle,levelのtopicを区別する手段がない！
     //selectの時にrealmからどのtopicが参照されたのかを伝えられればいいのだが……。
+    //MemoAdapterからtopic.updateDate情報をもらうことで一意に定まるようになった。
 
 
     public void plus(View v){
@@ -371,6 +411,16 @@ public class TopActivity extends AppCompatActivity {
         }
 
     }
+
+
+    @Override
+    protected  void onResume(){
+        super.onResume();
+
+
+
+    }
+
 
 
 

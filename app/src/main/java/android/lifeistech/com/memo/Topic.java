@@ -14,8 +14,6 @@ public class Topic extends  RealmObject{
 
         public String updateDate;
 
-        //content　は　コメントアウト中
-        //public String content;
 
 
         //category は「ジャンル」に相当するパーツ(contentをcategoryに書き換えればよい）
@@ -33,13 +31,6 @@ public class Topic extends  RealmObject{
 
 
 
-
-
-
-
-
-        //levelは「鉄板度」に相当するパーツ
-        //public int level;
 
 
 
