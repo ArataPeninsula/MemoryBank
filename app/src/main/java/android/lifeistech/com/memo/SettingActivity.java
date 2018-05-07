@@ -177,4 +177,11 @@ public class SettingActivity extends AppCompatActivity {
 
         reshow();
     }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+
+    }
 }

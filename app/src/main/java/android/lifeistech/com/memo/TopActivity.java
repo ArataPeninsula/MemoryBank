@@ -8,21 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
-
 import java.util.Collections;
-
-
 import io.realm.Realm;
-
 public class TopActivity extends AppCompatActivity {
 
     public Realm realm;
@@ -156,6 +148,10 @@ public class TopActivity extends AppCompatActivity {
 
         }
 
+        //全ジャンルの追加（TopActivityのみ）
+
+        arrayList.add(0,"全ジャンル");
+
         for (int i = 0; i < arrayList.size(); i++) {
 
             adapter.add(arrayList.get(i));
@@ -221,65 +217,142 @@ public class TopActivity extends AppCompatActivity {
             Collections.shuffle(arrayList2);
 
 
-            if(selectedLevelPosition == 0) {
-
-                    for (int i = 0; i < total+1; i++ ){
-
+            //全ジャンルの時（0）はselectedCategoryPositionで縛らずにランダム表示。
+            //全ジャンル以外の時は縛るが、selectedCategoryPositionを-1することに注意！！（(0)に全ジャンルを挿入したから）
 
 
-                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
-                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
+            if(selectedCategoryPosition == 0){
+
+                if (selectedLevelPosition == 0) {
+
+                    for (int i = 0; i < total + 1; i++) {
+
+
+                        topic = realm.where(Topic.class)
+                                .equalTo("id", arrayList2.get(i))
                                 .findFirst();
 
 
-                        if(topic != null){
+                        if (topic != null) {
                             break;
                         }
                     }
-                }else if(selectedLevelPosition == 1){
+                } else if (selectedLevelPosition == 1) {
 
-                    for(int i = 0; i < total+1 ;i++ ) {
+                    for (int i = 0; i < total + 1; i++) {
 
                         topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
-                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .lessThan("level", 3)
                                 .greaterThan("level", -3)
                                 .findFirst();
 
-                        if(topic != null){
+                        if (topic != null) {
                             break;
                         }
 
                     }
-                }else if(selectedLevelPosition == 2){
+                } else if (selectedLevelPosition == 2) {
 
 
-                    for(int i = 0; i < total + 1; i++) {
+                    for (int i = 0; i < total + 1; i++) {
 
 
                         topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
-                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .greaterThan("level", 2)
                                 .findFirst();
 
-                        if(topic != null){
+                        if (topic != null) {
                             break;
                         }
                     }
-                }else if(selectedLevelPosition == 3){
+                } else if (selectedLevelPosition == 3) {
 
-                    for(int i = 0; i < total + 1; i++) {
+                    for (int i = 0; i < total + 1; i++) {
 
                         topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
-                                .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .lessThan("level", -2)
                                 .findFirst();
 
-                        if(topic != null){
+                        if (topic != null) {
                             break;
                         }
                     }
+
+
                 }
+
+
+            }else {
+
+                //全ジャンル以外が選ばれた時の処理
+
+
+                if (selectedLevelPosition == 0) {
+
+                    for (int i = 0; i < total + 1; i++) {
+
+
+                        topic = realm.where(Topic.class)
+                                .equalTo("id", arrayList2.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition - 1)
+                                .findFirst();
+
+
+                        if (topic != null) {
+                            break;
+                        }
+                    }
+                } else if (selectedLevelPosition == 1) {
+
+                    for (int i = 0; i < total + 1; i++) {
+
+                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition - 1)
+                                .lessThan("level", 3)
+                                .greaterThan("level", -3)
+                                .findFirst();
+
+                        if (topic != null) {
+                            break;
+                        }
+
+                    }
+                } else if (selectedLevelPosition == 2) {
+
+
+                    for (int i = 0; i < total + 1; i++) {
+
+
+                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition - 1)
+                                .greaterThan("level", 2)
+                                .findFirst();
+
+                        if (topic != null) {
+                            break;
+                        }
+                    }
+                } else if (selectedLevelPosition == 3) {
+
+                    for (int i = 0; i < total + 1; i++) {
+
+                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
+                                .equalTo("selectedCategoryPosition", selectedCategoryPosition - 1)
+                                .lessThan("level", -2)
+                                .findFirst();
+
+                        if (topic != null) {
+                            break;
+                        }
+                    }
+
+
+                }
+
+            }
+
+
+
 
                 //該当するtopicがあったか否かで場合分け
                 //nullならボタンを押せなくする
@@ -298,12 +371,8 @@ public class TopActivity extends AppCompatActivity {
 
                     titleText.setText(topic.title);
 
-                    // res/array/list.xmlに定義したものから配列をつくる
+  //ArrayListをSharedPreferencesから呼び出してselecedCategoryPositionに該当するものをViewに表示
 
-//                    String[] categoryArray = this.getResources().getStringArray(R.array.list);
-//
-////                    // 保存してある番号から実際のCategoryを取得
-////                    categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
 
                     arrayList = gson.fromJson(pref.getString("category", "")
                             , new TypeToken<ArrayList<String>>() {}.getType());
@@ -454,6 +523,10 @@ public class TopActivity extends AppCompatActivity {
 
         arrayList = gson.fromJson(pref.getString("category","")
                 ,new TypeToken<ArrayList<String>>(){}.getType());
+
+        //全ジャンルの追加
+
+        arrayList.add(0,"全ジャンル");
 
 
         for(int i = 0; i < arrayList.size(); i++) {
