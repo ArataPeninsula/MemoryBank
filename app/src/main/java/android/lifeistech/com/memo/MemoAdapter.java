@@ -1,9 +1,7 @@
 package android.lifeistech.com.memo;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +69,8 @@ public class MemoAdapter extends ArrayAdapter<Topic> {
 
         // 保存してある番号から実際のCategoryを取得
         categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
+
+        //categoryText.setText(arrayList.get(topic.selectedCategoryPosition));
 
 
         // 鉄板度の表示

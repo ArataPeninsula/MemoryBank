@@ -85,12 +85,6 @@ public class CreateActivity extends AppCompatActivity {
 
         arrayList = new ArrayList<>();
 
-//        //とりあえず適当に入れる。
-//
-//        arrayList.add("");
-//        arrayList.add("悲しい");
-//        arrayList.add("怒った");
-//        arrayList.add("アイデア");
 
 
         //SettingActivity上のListViewを表示させるためのArrayAdapter
@@ -227,6 +221,35 @@ public class CreateActivity extends AppCompatActivity {
         startActivity(intent);
 
         finish();
+    }
+
+    public void reshow(){
+
+        //ジャンルの追加を更新。onRestartとかに入れればいいはず。。。
+
+
+        adapter.clear();
+
+        arrayList = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+
+        for(int i = 0; i < arrayList.size(); i++) {
+
+            adapter.add(arrayList.get(i));
+
+
+        }
+
+        categorySpinner.setAdapter(adapter);
+
+    }
+
+    @Override
+    protected  void onRestart(){
+        super.onRestart();
+
+        reshow();
     }
 
     @Override

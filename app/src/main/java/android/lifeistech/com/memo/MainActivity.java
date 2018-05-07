@@ -49,11 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //onResumeのshowメソッドをonCreateでも行う。削除機能のために。
-        RealmResults<Topic> results = realm.where(Topic.class).findAll();
-        List<Topic> items = realm.copyFromRealm(results);
-
-        adapter = new MemoAdapter(this,R.layout.layout_item_memo,items);
+//        //onResumeのshowメソッドをonCreateでも行う。削除機能のために。
+//        RealmResults<Topic> results = realm.where(Topic.class).findAll();
+//        List<Topic> items = realm.copyFromRealm(results);
+//
+//
+//        //多分↓がまずい！！！　memoadapterは画面が帰ってくるたび新しく生成されてほしい（categoryの情報が動的に変更できるようになったせい）
+//
+//        adapter = new MemoAdapter(this,R.layout.layout_item_memo,items);
 
         //編集画面に遷移（クリック）
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

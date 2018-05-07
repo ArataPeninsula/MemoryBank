@@ -63,15 +63,15 @@ public class TopActivity extends AppCompatActivity {
 
 
     //ランダムを利用したい
-    ArrayList<Integer> arrayList;
+    ArrayList<Integer> arrayList2;
 
 
     //categoryを動的表示＋編集
     Gson gson;
 
-    ArrayList<String> arrayList2;
+    ArrayList<String> arrayList;
 
-    ArrayAdapter<String> arrayAdapter;
+    ArrayAdapter<String> adapter;
 
 
 
@@ -115,44 +115,55 @@ public class TopActivity extends AppCompatActivity {
         minusButton.setEnabled(false);
         resetButton.setEnabled(false);
 
-
-        //Jsonを利用してcategoryをDBに記録＋編集可能に!!!!
-
-        //Gsonインスタンス形成
+        //
 
 
         gson = new Gson();
 
-        arrayList2 = new ArrayList<>();
+        arrayList = new ArrayList<>();
 
-        arrayAdapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item);
+        adapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item);
 
         //今の所ここに書いてあるものがSharedPreferences上に記憶され、呼び出されている。
         //onCreateが呼ばれるたびにデフォの選択肢が追加され続けてしまうのでは？？　Jsonのおかげ？　重複不可？？
 
-        arrayList2.add("");
-        arrayList2.add("悲しい");
-        arrayList2.add("怒った");
-        arrayList2.add("アイデア");
-        arrayList2.add("ハプニング");
+
+        //このままではまずい！！　戻ってくるたびにSharedPreferencesのcategoryが最初に戻ってしまう！！！
+        //if と　boolean と　SharedPreferences を利用してアプリの初回起動時だけデフォのリストが呼び出されるようにする。
 
 
-        editor.putString("category",gson.toJson(arrayList2));
-        editor.apply();
+        if(pref.getBoolean("firstTimeOnly",true)) {
+            arrayList.add("");
+            arrayList.add("悲しい");
+            arrayList.add("怒った");
+            arrayList.add("アイデア");
+            arrayList.add("ハプニング");
 
-        //TopActivity上のspinnerに表示
 
-        arrayList2 = gson.fromJson(pref.getString("category","")
-                ,new TypeToken<ArrayList<String>>(){}.getType());
+            editor.putString("category", gson.toJson(arrayList));
+            editor.apply();
 
-        for(int i = 0; i < arrayList2.size(); i++){
 
-            arrayAdapter.add(arrayList2.get(i));
+            //これ以降は常にfalseを取るのでTopActivityに戻って来ても、リストは初期化されない。
+            editor.putBoolean("firstTimeOnly",false);
+            editor.apply();
+
+        }else{
+
+            arrayList = gson.fromJson(pref.getString("category", "")
+                    , new TypeToken<ArrayList<String>>() {}.getType());
+
+
+        }
+
+        for (int i = 0; i < arrayList.size(); i++) {
+
+            adapter.add(arrayList.get(i));
 
         }
 
 
-        categorySpinner.setAdapter(arrayAdapter);
+        categorySpinner.setAdapter(adapter);
 
 
 
@@ -198,16 +209,16 @@ public class TopActivity extends AppCompatActivity {
 
 
 
-            arrayList = new ArrayList<>();
+            arrayList2 = new ArrayList<>();
 
             //+1はいらないのでは？？
             for(int i = 0; i < total+1; i ++){
 
-                arrayList.add(i);
+                arrayList2.add(i);
 
             }
 
-            Collections.shuffle(arrayList);
+            Collections.shuffle(arrayList2);
 
 
             if(selectedLevelPosition == 0) {
@@ -216,7 +227,7 @@ public class TopActivity extends AppCompatActivity {
 
 
 
-                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .findFirst();
 
@@ -229,7 +240,7 @@ public class TopActivity extends AppCompatActivity {
 
                     for(int i = 0; i < total+1 ;i++ ) {
 
-                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .lessThan("level", 3)
                                 .greaterThan("level", -3)
@@ -246,7 +257,7 @@ public class TopActivity extends AppCompatActivity {
                     for(int i = 0; i < total + 1; i++) {
 
 
-                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .greaterThan("level", 2)
                                 .findFirst();
@@ -259,7 +270,7 @@ public class TopActivity extends AppCompatActivity {
 
                     for(int i = 0; i < total + 1; i++) {
 
-                        topic = realm.where(Topic.class).equalTo("id", arrayList.get(i))
+                        topic = realm.where(Topic.class).equalTo("id", arrayList2.get(i))
                                 .equalTo("selectedCategoryPosition", selectedCategoryPosition)
                                 .lessThan("level", -2)
                                 .findFirst();
@@ -289,10 +300,16 @@ public class TopActivity extends AppCompatActivity {
 
                     // res/array/list.xmlに定義したものから配列をつくる
 
-                    String[] categoryArray = this.getResources().getStringArray(R.array.list);
+//                    String[] categoryArray = this.getResources().getStringArray(R.array.list);
+//
+////                    // 保存してある番号から実際のCategoryを取得
+////                    categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
 
-                    // 保存してある番号から実際のCategoryを取得
-                    categoryText.setText(categoryArray[topic.selectedCategoryPosition]);
+                    arrayList = gson.fromJson(pref.getString("category", "")
+                            , new TypeToken<ArrayList<String>>() {}.getType());
+
+                    categoryText.setText(arrayList.get(topic.selectedCategoryPosition));
+
 
                     //level表示
                     levelText.setText(String.valueOf(topic.level));
@@ -428,12 +445,33 @@ public class TopActivity extends AppCompatActivity {
     }
 
 
+    public void reshow(){
+
+        //ジャンルの追加を更新。onRestartとかに入れればいいはず。。。
+
+
+        adapter.clear();
+
+        arrayList = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+
+        for(int i = 0; i < arrayList.size(); i++) {
+
+            adapter.add(arrayList.get(i));
+
+
+        }
+
+        categorySpinner.setAdapter(adapter);
+
+    }
+
     @Override
-    protected  void onResume(){
-        super.onResume();
+    protected  void onRestart(){
+        super.onRestart();
 
-
-
+        reshow();
     }
 
 

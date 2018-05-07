@@ -84,6 +84,7 @@ public class SettingActivity extends AppCompatActivity {
                 ,new TypeToken<ArrayList<String>>(){}.getType());
 
 
+        adapter.clear();
 
         for(int i = 0; i < arrayList.size(); i++) {
 
@@ -92,9 +93,10 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
+
+        //一旦listViewを初期化してから再度記録されたListを表示
+
         listView.setAdapter(adapter);
-
-
         //
         //
         categoryEditText = (EditText) findViewById(R.id.categoryEditText);
@@ -106,6 +108,8 @@ public class SettingActivity extends AppCompatActivity {
 
     public void categoryAdd(View v){
 
+       adapter.clear();
+
         //ジャンルを動的に編集（追加）する
         arrayList = gson.fromJson(pref.getString("category","")
                 ,new TypeToken<ArrayList<String>>(){}.getType());
@@ -113,18 +117,9 @@ public class SettingActivity extends AppCompatActivity {
         arrayList.add(categoryEditText.getText().toString());
 
 
-        editor.putString("category",gson.toJson(arrayList));
-        editor.apply();
-
-
 
         //EditTextから文字を消去
         categoryEditText.setText("");
-
-        //リストを更新
-
-        arrayList = gson.fromJson(pref.getString("category","")
-                ,new TypeToken<ArrayList<String>>(){}.getType());
 
 
 
@@ -135,7 +130,15 @@ public class SettingActivity extends AppCompatActivity {
 
         }
 
+
         listView.setAdapter(adapter);
+
+        //↓が問題。このままだともともと保存されていたリストが重複して保存されてしまう。一旦データを消して再登録。
+
+        editor.remove("category");
+
+        editor.putString("category",gson.toJson(arrayList));
+        editor.apply();
 
 
 
@@ -148,8 +151,30 @@ public class SettingActivity extends AppCompatActivity {
 
     public void reshow(){
 
+        //ジャンルの追加を更新。onRestartとかに入れればいいはず。。。
 
 
+        adapter.clear();
 
+        arrayList = gson.fromJson(pref.getString("category","")
+                ,new TypeToken<ArrayList<String>>(){}.getType());
+
+
+        for(int i = 0; i < arrayList.size(); i++) {
+
+            adapter.add(arrayList.get(i));
+
+
+        }
+
+        listView.setAdapter(adapter);
+
+    }
+
+    @Override
+    protected  void onRestart(){
+        super.onRestart();
+
+        reshow();
     }
 }
