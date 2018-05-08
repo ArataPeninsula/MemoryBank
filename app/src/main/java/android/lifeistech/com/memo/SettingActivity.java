@@ -93,13 +93,7 @@ public class SettingActivity extends AppCompatActivity {
 
             adapter.add(arrayList.get(i));
 
-
-
-
         }
-
-
-        //一旦listViewを初期化してから再度記録されたListを表示
 
         listView.setAdapter(adapter);
 
@@ -107,86 +101,87 @@ public class SettingActivity extends AppCompatActivity {
 
 
         //onClickListenerでジャンルの削除機能。
-        //アラート画面＋realmに保存されたselectedCategoryPositionの調整
-        //0番目の「未分類」は消せないようにする。消されたジャンルで登録されていたトピックは「未分類」に行く
+        //0番目の「未分類」は消せないようにする。
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
 
-                builder.setMessage("このジャンルを消去しますか？　このジャンルの話題は「未分類」になります。")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                if (position == 0) {
 
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
 
-                                adapter = (ArrayAdapter) listView.getAdapter();
-
-
-                                //object型
-                                Object selectedCategory =  adapter.getItem(position);
+                    builder.setMessage("このジャンルを消去しますか？　このジャンルの話題は「未分類」になります。")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
 
+                                    adapter = (ArrayAdapter) listView.getAdapter();
 
 
-                                //データを消して、リストを並べなおす。見た目上消去される。
-                                adapter.remove(selectedCategory);
-
-                                adapter.notifyDataSetChanged();
+                                    //object型
+                                    Object selectedCategory = adapter.getItem(position);
 
 
-                                //削除を反映させたArraylistを記憶させる
-                                //arraylistを初期化して、positionに保存されているものを消去
-                                //SharedPreferencesへと反映
+                                    //データを消して、リストを並べなおす。見た目上消去される。
+                                    adapter.remove(selectedCategory);
 
-                                arrayList = gson.fromJson(pref.getString("category","")
-                                        ,new TypeToken<ArrayList<String>>(){}.getType());
+                                    adapter.notifyDataSetChanged();
 
 
-                                arrayList.remove(position);
+                                    //削除を反映させたArraylistを記憶させる
+                                    //arraylistを初期化して、positionに保存されているものを消去
+                                    //SharedPreferencesへと反映
+
+                                    arrayList = gson.fromJson(pref.getString("category", "")
+                                            , new TypeToken<ArrayList<String>>() {
+                                            }.getType());
 
 
-                                editor.remove("category");
-
-                                editor.putString("category",gson.toJson(arrayList));
-                                editor.apply();
+                                    arrayList.remove(position);
 
 
+                                    editor.remove("category");
 
-                                //realmから該当するカテゴリーのtopicを全て取り出して、0を代入
+                                    editor.putString("category", gson.toJson(arrayList));
+                                    editor.apply();
 
-                                int total = pref.getInt("goukei",0);
 
-                                for(int i = 0; i < total; i++) {
-                                    final Topic topic = realm.where(Topic.class)
-                                            .equalTo("id", i)
-                                            .equalTo("selectedCategoryPosition", position)
-                                            .findFirst();
+                                    //realmから該当するカテゴリーのtopicを全て取り出して、0を代入
 
-                                    if( topic != null) {
+                                    int total = pref.getInt("goukei", 0);
 
-                                        realm.executeTransaction(new Realm.Transaction() {
-                                            @Override
-                                            public void execute(Realm realm) {
+                                    for (int i = 0; i < total; i++) {
+                                        final Topic topic = realm.where(Topic.class)
+                                                .equalTo("id", i)
+                                                .equalTo("selectedCategoryPosition", position)
+                                                .findFirst();
 
-                                                topic.selectedCategoryPosition = 0;
+                                        if (topic != null) {
 
-                                            }
-                                        });
+                                            realm.executeTransaction(new Realm.Transaction() {
+                                                @Override
+                                                public void execute(Realm realm) {
+
+                                                    topic.selectedCategoryPosition = 0;
+
+                                                }
+                                            });
+                                        }
+
                                     }
 
-                                }
 
+                                    //削除されるカテゴリーより下に表示されていたカテゴリーのselectedCategoryPositionを一律で-1する
 
-                                //削除されるカテゴリーより下に表示されていたカテゴリーのselectedCategoryPositionを一律で-1する
-
-                                    for(int i = 0; i < total; i++){
+                                    for (int i = 0; i < total; i++) {
 
                                         final Topic topic2 = realm.where(Topic.class)
-                                                        .equalTo("id",i)
-                                                        .greaterThan("selectedCategoryPosition",position)
-                                                        .findFirst();
+                                                .equalTo("id", i)
+                                                .greaterThan("selectedCategoryPosition", position)
+                                                .findFirst();
 
 
                                         if (topic2 != null) {
@@ -204,16 +199,21 @@ public class SettingActivity extends AppCompatActivity {
                                     }
 
 
+                                }
 
-                            }
-                        })
 
-                        .setNegativeButton("キャンセル",null)
-                        .setCancelable(true);
+                            })
 
-                builder.show();
+
+                            .setNegativeButton("キャンセル", null)
+                            .setCancelable(true);
+
+                    builder.show();
+
+
+                }
+
                 return false;
-
             }
         });
 
