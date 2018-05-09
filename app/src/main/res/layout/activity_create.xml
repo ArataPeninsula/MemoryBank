@@ -6,16 +6,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/titleEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
+            android:layout_marginTop="64dp"
+            android:background="@color/colorPrimary"
             android:hint="タイトル"
-            android:inputType="none|text" />
+            android:inputType="none|text|textMultiLine"
+            android:padding="16dp"
+            android:textColor="@android:color/background_light"
+            android:textColorHint="@android:color/background_light"
+            android:textSize="16sp" />
 
         <!--　教科書のcontent↓をコメントアウトした-->
 
@@ -34,13 +39,18 @@
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:background="@color/colorPrimary"
+            android:gravity="right"
+            android:padding="8dp"
             android:spinnerMode="dialog" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:layout_marginTop="80dp"
+            android:background="@color/colorAccent"
             android:onClick="create"
             android:text="作成"
             android:textColor="@android:color/background_light" />

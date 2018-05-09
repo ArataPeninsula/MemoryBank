@@ -9,21 +9,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="8">
-
-
-        </ListView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="64dp"
+            android:layout_weight="0"
             android:orientation="horizontal">
 
 
@@ -33,8 +28,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="新しいジャンル"
-                android:inputType="textPersonName" />
+                android:hint="新ジャンルを追加"
+                android:inputType="textPersonName"
+                android:maxLength="18"
+                android:maxLines="1"
+                android:singleLine="false"
+                android:textColor="@android:color/background_light"
+                android:textColorHint="@android:color/background_light" />
+
+            <!--android:theme="@style/EditTextColorControl"-->
+
 
             <Button
                 android:id="@+id/button3"
@@ -49,11 +52,28 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginEnd="11dp"
                 android:layout_weight="1"
+                android:background="@null"
                 android:onClick="close"
                 app:srcCompat="@android:drawable/btn_dialog" />
+
+
         </LinearLayout>
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="0"
+            android:background="@android:color/background_light">
+
+
+        </ListView>
 
 
     </LinearLayout>

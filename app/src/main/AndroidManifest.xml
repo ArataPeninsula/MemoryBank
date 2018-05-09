@@ -17,10 +17,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateActivity" />
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".CreateActivity"
+            android:theme="@style/Theme.TranslucentBackground"/>
+        <activity android:name=".DetailActivity"
+            android:theme="@style/Theme.TranslucentBackground"/>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SettingActivity"
+
+            android:theme="@style/Theme.TranslucentBackground">
+
+        </activity>
     </application>
 
 </manifest>

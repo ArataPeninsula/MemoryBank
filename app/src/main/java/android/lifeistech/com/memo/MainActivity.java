@@ -167,6 +167,10 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
 
+        //遷移してきたらリストの一番下がまず表示される。
+        listView.setSelection(items.size());
+
+
     }
 
     @Override
