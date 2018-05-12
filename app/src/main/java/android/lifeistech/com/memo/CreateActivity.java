@@ -7,10 +7,13 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -103,18 +106,27 @@ public class CreateActivity extends AppCompatActivity {
 
 
 
-        for(int i = 0; i < arrayList.size(); i++) {
+//        for(int i = 0; i < arrayList.size(); i++) {
+//
+//            adapter.add(arrayList.get(i));
+//
+//
+//        }
 
-            adapter.add(arrayList.get(i));
+        //より簡単に
+        adapter = new ArrayAdapter<String>(categorySpinner.getContext(),R.layout.support_simple_spinner_dropdown_item){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setGravity(Gravity.RIGHT);
+                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+                return v;
+            }
 
 
-        }
+        };
+        adapter.addAll(arrayList);
 
         categorySpinner.setAdapter(adapter);
-
-
-
-
 
 
 
@@ -199,19 +211,19 @@ public class CreateActivity extends AppCompatActivity {
 
 
 
-    private void check(String title,String updateDate){
-
-        Topic topic = new Topic();
-
-        topic.title = title;
-        topic.updateDate = updateDate;
-        //topic.content = content;
-
-        Log.d("Topic",topic.title);
-        Log.d("Topic",topic.updateDate);
-        //Log.d("Topic",topic.content);
-
-    }
+//    private void check(String title,String updateDate){
+//
+//        Topic topic = new Topic();
+//
+//        topic.title = title;
+//        topic.updateDate = updateDate;
+//        //topic.content = content;
+//
+//        Log.d("Topic",topic.title);
+//        Log.d("Topic",topic.updateDate);
+//        //Log.d("Topic",topic.content);
+//
+//    }
 
     //SettingActivityへ遷移。仮に。
     public void move(View v){
@@ -228,7 +240,17 @@ public class CreateActivity extends AppCompatActivity {
         //ジャンルの追加を更新。onRestartとかに入れればいいはず。。。
 
 
+
         adapter.clear();
+
+        adapter = new ArrayAdapter<String>(categorySpinner.getContext(),R.layout.support_simple_spinner_dropdown_item){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setGravity(Gravity.RIGHT);
+                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+                return v;
+            }
+        };
 
         arrayList = gson.fromJson(pref.getString("category","")
                 ,new TypeToken<ArrayList<String>>(){}.getType());

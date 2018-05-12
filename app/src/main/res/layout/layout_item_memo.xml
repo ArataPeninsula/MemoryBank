@@ -21,7 +21,6 @@
                 android:id="@+id/titleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#607D8B"
                 android:backgroundTint="@null"
                 android:fontFamily="cursive"
                 android:padding="16dp"
@@ -52,13 +51,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/titleText"
                     android:layout_weight="8"
-                    android:background="#607D8B"
-                    android:backgroundTint="@null"
                     android:ellipsize="end"
                     android:gravity="right|end"
                     android:lines="1"
                     android:textColor="@android:color/background_light"
-                    android:textColorLink="@android:color/background_light"
                     android:textSize="16sp" />
             </LinearLayout>
 

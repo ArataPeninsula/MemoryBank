@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import com.google.gson.Gson;
@@ -28,6 +31,7 @@ public class TopActivity extends AppCompatActivity {
     public int total;
 
 
+    LinearLayout memoLinearLayout;
 
 
     TextView titleText;
@@ -65,6 +69,18 @@ public class TopActivity extends AppCompatActivity {
 
     ArrayAdapter<String> adapter;
 
+    //MyAdapter adapter;
+
+
+    //levelを動的に表示させて、右寄せする
+
+    ArrayAdapter<String> adapter2;
+
+    ArrayList<String> levelList;
+
+
+
+
 
 
 
@@ -93,6 +109,10 @@ public class TopActivity extends AppCompatActivity {
 
         titleText = (TextView) findViewById(R.id.titleText);
         categoryText = (TextView) findViewById(R.id.categoryText);
+
+
+
+        memoLinearLayout = (LinearLayout) findViewById(R.id.memoLinearLayout);
         levelText = (TextView) findViewById(R.id.levelText);
 
         categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
@@ -114,7 +134,55 @@ public class TopActivity extends AppCompatActivity {
 
         arrayList = new ArrayList<>();
 
-        adapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item);
+
+        //levelSpinnerの動的追加
+
+        levelList = new ArrayList<>();
+
+
+        levelList.add(0,"all");
+        levelList.add(1,"new(-2~+2)");
+        levelList.add(2,"good(+3~)");
+        levelList.add(3,"challenging(~-3)");
+
+
+
+        adapter2 = new ArrayAdapter<String>(levelSpinner.getContext(),R.layout.support_simple_spinner_dropdown_item){
+
+            // テキストの位置
+            //テキストの白色
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setGravity(Gravity.RIGHT);
+                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+                return v;
+            }
+
+
+        };
+
+
+        adapter2.addAll(levelList);
+        levelSpinner.setAdapter(adapter2);
+
+        adapter = new ArrayAdapter<String>(categorySpinner.getContext(),R.layout.support_simple_spinner_dropdown_item){
+
+            // テキストの位置
+            //テキストの白色
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setGravity(Gravity.RIGHT);
+                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+                return v;
+            }
+
+
+        };
+
+
+
+
+
 
         //今の所ここに書いてあるものがSharedPreferences上に記憶され、呼び出されている。
         //onCreateが呼ばれるたびにデフォの選択肢が追加され続けてしまうのでは？？　Jsonのおかげ？　重複不可？？
@@ -184,10 +252,17 @@ public class TopActivity extends AppCompatActivity {
 
 
 
+
+        memoLinearLayout.setBackgroundColor(getColor(R.color.colorPrimary));
+        levelText.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+
+
         total = pref.getInt("goukei", 0);
 
         //totalはidの最大値よりも1大きい数（記憶するときに+1されるから）。
         total = total--;
+
+
 
 
 
@@ -359,6 +434,8 @@ public class TopActivity extends AppCompatActivity {
                 if(topic == null){
 
                     titleText.setText("該当する記録がありません！");
+                    levelText.setText("");
+                    categoryText.setText("");
                     plusButton.setEnabled(false);
                     minusButton.setEnabled(false);
                     resetButton.setEnabled(false);
@@ -540,6 +617,15 @@ public class TopActivity extends AppCompatActivity {
 
     }
 
+    public void create(View view){
+
+        Intent intent = new Intent(this,CreateActivity.class);
+        startActivity(intent);
+
+
+
+    }
+
     @Override
     protected  void onRestart(){
         super.onRestart();
@@ -556,5 +642,7 @@ public class TopActivity extends AppCompatActivity {
 
         realm.close();
     }
+
+
 
 }

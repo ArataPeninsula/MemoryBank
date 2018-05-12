@@ -2,7 +2,18 @@
 <resources>
     <color name="colorPrimary">#607d8b</color>
     <color name="colorPrimaryDark">#37474f</color>
-    <color name="colorAccent">#f06292</color>
+    <color name="colorAccent">#5d4037</color>
+
+    <!--#5D4037 Brown700-->
+
+    <!--#607D8B Blue gray500-->
+    <!--#37474f blue gray 700-->
+
+    <!--#FDD835 Yellow 600-->
+
+    <!--#FF9800 Orange 500-->
+
+
 
     <color name="transparent">#7f000000</color>
 
