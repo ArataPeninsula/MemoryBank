@@ -37,6 +37,8 @@ public class TopActivity extends AppCompatActivity {
     TextView titleText;
     TextView categoryText;
     TextView levelText;
+    TextView brownView;
+    TextView brownView2;
 
 
     Spinner categorySpinner;
@@ -110,10 +112,15 @@ public class TopActivity extends AppCompatActivity {
         titleText = (TextView) findViewById(R.id.titleText);
         categoryText = (TextView) findViewById(R.id.categoryText);
 
+        brownView = (TextView) findViewById(R.id.brownView);
+        brownView2 = (TextView) findViewById(R.id.brownView2);
+
 
 
         memoLinearLayout = (LinearLayout) findViewById(R.id.memoLinearLayout);
         levelText = (TextView) findViewById(R.id.levelText);
+
+
 
         categorySpinner = (Spinner) findViewById(R.id.categorySpinner);
         levelSpinner = (Spinner) findViewById(R.id.levelSpinner);
@@ -153,8 +160,9 @@ public class TopActivity extends AppCompatActivity {
             //テキストの白色
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
-                ((TextView) v).setGravity(Gravity.RIGHT);
-                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+                ((TextView) v).setGravity(Gravity.CENTER_HORIZONTAL);
+//                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+//                ((TextView)v).setTextSize(12);
                 return v;
             }
 
@@ -171,8 +179,9 @@ public class TopActivity extends AppCompatActivity {
             //テキストの白色
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
-                ((TextView) v).setGravity(Gravity.RIGHT);
-                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+                ((TextView) v).setGravity(Gravity.CENTER_HORIZONTAL);
+//                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+//                ((TextView)v).setTextSize(12);
                 return v;
             }
 
@@ -253,8 +262,12 @@ public class TopActivity extends AppCompatActivity {
 
 
 
-        memoLinearLayout.setBackgroundColor(getColor(R.color.colorPrimary));
+        memoLinearLayout.setBackgroundColor(getColor(R.color.colorMemo));
         levelText.setBackgroundColor(getColor(R.color.colorPrimaryDark));
+        brownView.setBackgroundColor(getColor(R.color.colorAccent));
+        brownView2.setBackgroundColor(getColor(R.color.colorAccent));
+
+
 
 
         total = pref.getInt("goukei", 0);

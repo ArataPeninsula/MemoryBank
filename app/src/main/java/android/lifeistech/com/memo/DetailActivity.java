@@ -3,7 +3,9 @@ package android.lifeistech.com.memo;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -60,16 +62,30 @@ public class DetailActivity extends AppCompatActivity {
 
         adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item);
 
+        adapter = new ArrayAdapter<String>(categorySpinner.getContext(),R.layout.support_simple_spinner_dropdown_item) {
 
-        arrayList = gson.fromJson(pref.getString("category","")
-                ,new TypeToken<ArrayList<String>>(){}.getType());
+            // テキストの位置
+            //テキストの白色
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setGravity(Gravity.RIGHT);
+//                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+//                ((TextView) v).setTextSize(12);
+                return v;
+            }
+
+        };
+            arrayList = gson.fromJson(pref.getString("category","")
+                    ,new TypeToken<ArrayList<String>>(){}.getType());
 
 
         for(int i = 0; i < arrayList.size(); i++){
 
-            adapter.add(arrayList.get(i));
+                adapter.add(arrayList.get(i));
 
-        }
+            }
+
+
 
 
 

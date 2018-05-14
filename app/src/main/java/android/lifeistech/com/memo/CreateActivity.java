@@ -118,7 +118,7 @@ public class CreateActivity extends AppCompatActivity {
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
                 ((TextView) v).setGravity(Gravity.RIGHT);
-                ((TextView) v).setTextColor(getResources().getColor(android.R.color.white));
+//
                 return v;
             }
 

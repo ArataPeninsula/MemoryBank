@@ -9,18 +9,33 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/titleEditText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
-            android:background="@color/colorPrimary"
-            android:hint="タイトル"
-            android:inputType="none|text|textMultiLine"
-            android:padding="16dp"
-            android:textColor="@android:color/background_light"
-            android:textColorHint="@android:color/background_light"
-            android:textSize="16sp" />
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/titleEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/colorMemo"
+                android:hint="タイトル"
+                android:inputType="none|text|textMultiLine"
+                android:padding="16dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@color/colorAccent" />
+
+        </LinearLayout>
 
         <!--　教科書のcontent↓をコメントアウトした-->
 
@@ -35,15 +50,28 @@
             android:hint="メモ"
             android:inputType="textPersonName" /> -->
 
-        <Spinner
-            android:id="@+id/categorySpinner"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@color/colorPrimary"
-            android:gravity="right"
-            android:padding="8dp"
-            android:spinnerMode="dialog" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:background="@color/colorMemo"
+                android:gravity="right"
+                android:padding="8dp"
+                android:spinnerMode="dialog" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="24dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/button"

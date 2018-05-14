@@ -34,7 +34,7 @@
                 android:maxLines="1"
                 android:singleLine="false"
                 android:textColor="@android:color/background_light"
-                android:textColorHint="@android:color/background_light" />
+                android:textColorHint="@color/colorPrimary" />
 
             <!--android:theme="@style/EditTextColorControl"-->
 
