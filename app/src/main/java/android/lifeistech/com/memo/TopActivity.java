@@ -203,10 +203,13 @@ public class TopActivity extends AppCompatActivity {
 
         if(pref.getBoolean("firstTimeOnly",true)) {
             arrayList.add("");
-            arrayList.add("悲しい");
-            arrayList.add("怒った");
-            arrayList.add("アイデア");
+            arrayList.add("失敗");
+            arrayList.add("変");
             arrayList.add("ハプニング");
+            arrayList.add("アイデア");
+            arrayList.add("友達に");
+            arrayList.add("初対面の人に");
+
 
 
             editor.putString("category", gson.toJson(arrayList));
