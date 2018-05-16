@@ -28,7 +28,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:backgroundTint="@null"
-                    android:fontFamily="cursive"
                     android:padding="16dp"
                     android:textAppearance="@style/TextAppearance.AppCompat"
                     android:textColor="@android:color/black"
